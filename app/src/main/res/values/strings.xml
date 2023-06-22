@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ITE Online Shop</string>
+    <string name="my_profile">My Profile</string>
+    <style name="HiddenTitleTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+</resources>
