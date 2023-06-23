@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.onlineshop.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
-import kh.edu.rupp.ite.onlineshop.api.model.Profile;
+import kh.edu.rupp.ite.onlineshop.api.model.Profiles;
 import kh.edu.rupp.ite.onlineshop.api.service.ApiService;
 import kh.edu.rupp.ite.onlineshop.databinding.FragmentProfileBinding;
 import kh.edu.rupp.ite.onlineshop.ui.adapter.ProfileAdapter;
@@ -33,58 +30,30 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentProfileBinding.inflate(inflater,container,false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        LoadingProfile();
         return binding.getRoot();
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        loadProfileListFromServer();
-    }
-
-    private void loadProfileListFromServer(){
+    private void LoadingProfile(){
+        binding.profileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ProfileAdapter profileAdapter = new ProfileAdapter();
+        binding.profileRecyclerView.setAdapter(profileAdapter);
         Gson gson = new GsonBuilder().setLenient().create();
-        Retrofit httpClient = new Retrofit.Builder()
-                .baseUrl("https://ferupp.s3.ap-southeast-1.amazonaws.com/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-
-        ApiService apiService = httpClient.create(ApiService.class);
-
-        Call<List<Profile>> task = apiService.loadProfileList();
-
-        task.enqueue(new Callback<List<Profile>>() {
-
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://raw.githubusercontent.com/")
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<Profiles> task = apiService.loadProfileList();
+        task.enqueue(new Callback<Profiles>() {
             @Override
-            public void onResponse(@NonNull Call<List<Profile>> call, @NonNull Response<List<Profile>> response) {
-                if (response.isSuccessful()) {
-                    showProfileList(response.body());
-                } else {
-                    Toast.makeText(getContext(), "Load province list failed!", Toast.LENGTH_LONG).show();
-                }
+            public void onResponse(Call<Profiles> call, Response<Profiles> response) {
+                profileAdapter.setProfile(response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Profile>> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Load profile list failed!", Toast.LENGTH_LONG).show();
-                Log.e("[ProfileFragment]", "Load profile failed: " + t.getMessage());
-                t.printStackTrace();
+            public void onFailure(Call<Profiles> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_LONG).show();
             }
         });
     }
-    private void showProfileList(List<Profile> profileList) {
-        // Create layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        binding.profileRecyclerView.setLayoutManager(layoutManager);
-
-
-        // Create adapter
-       ProfileAdapter adapter = new ProfileAdapter();
-        adapter.submitList(profileList);
-        binding.profileRecyclerView.setAdapter(adapter);
-    }
 }
-

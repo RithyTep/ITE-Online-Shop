@@ -2,35 +2,24 @@ package kh.edu.rupp.ite.onlineshop.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Profile {
-    @SerializedName("first_name")
-    private String firstName;
-    @SerializedName("last_name")
-    private String lastName;
-    private String email;
-    @SerializedName( "phone-number")
-    private String phoneNumber;
-    private String gender;
-    @SerializedName( "image-url")
-    private String imageUrl;
-    @SerializedName( "birthday")
-    private String birthDay;
-    private String address;
+public class Profiles {
 
-    public String getFirstName() {
-        return firstName;
+    private String first_name;
+
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     public String getEmail() {
@@ -65,13 +54,22 @@ public class Profile {
         this.imageUrl = imageUrl;
     }
 
-    public String getBirthDay() {
-        return birthDay;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDay(String birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
+
+    private String last_name;
+    private String email;
+    @SerializedName("phone-number")
+    private String phoneNumber;
+    private String gender;
+    @SerializedName("image-url")
+    private String imageUrl;
+    private String birthday;
 
     public String getAddress() {
         return address;
@@ -80,4 +78,7 @@ public class Profile {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    private String address;
+
 }

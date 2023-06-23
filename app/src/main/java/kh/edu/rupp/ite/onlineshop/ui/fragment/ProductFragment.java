@@ -47,7 +47,7 @@ public class ProductFragment extends Fragment {
     private void loadProductListFromServer(){
         Gson  gson = new GsonBuilder().setLenient().create();
         Retrofit httpClient = new Retrofit.Builder()
-                .baseUrl("https://ferupp.s3.ap-southeast-1.amazonaws.com/")
+                .baseUrl("https://raw.githubusercontent.com/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
